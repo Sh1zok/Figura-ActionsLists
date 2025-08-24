@@ -16,5 +16,12 @@ This script was created to solve three problems that create a TON of actions in 
 * **Everything in one place** - Action names are visible at once. You can immediately understand which one you need.
 * **Clean Code** - Designing a list of actions can, in the long run, reduce the number of lines written by tens of times.
 
+## How to install this script?
+The process of installing the script is quite simple
+1. Download the script from this repository.
+2. Place it in the directory with your avatar.
+3. Add it to the `autoScripts` list in avatar.json(If you have this list)
+4. Done. Have fun!
+
 > [!TIP]
 > Before using it, explore the features using [This Script Wiki](https://github.com/Sh1zok/Figura-ActionsLists/wiki)
