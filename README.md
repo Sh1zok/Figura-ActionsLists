@@ -16,6 +16,8 @@ This script was created to solve three problems that create a TON of actions in 
 * **Accuracy** - Since this script allows you to collect all these actions in a neat TEXT list, there is no longer a need to draw textures and select items for the icon of each action. At the same time, the ability to add a texture or item to the icon for each individual action remains.
 * **Everything in one place** - Action names are visible at once. You can immediately understand which one you need.
 * **Clean Code** - Designing a list of actions can, in the long run, reduce the number of lines written by tens of times.
+<img width="240" height="240" alt="nerd" src="https://github.com/user-attachments/assets/ed92a9eb-60a1-4f48-8110-c2cce95c524a" />
+
 
 ## How to install this script?
 The process of installing the script is quite simple
