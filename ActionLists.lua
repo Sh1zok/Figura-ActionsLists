@@ -86,8 +86,9 @@ function pagesCustomMethods:newActionList()
     function interface:title(title, shouldntMakeNewTitle) return interface:setTitle(title, shouldntMakeNewTitle) end -- Alias
 
     function interface:setActionList(table, shouldntMakeNewTitle)
-        if type(table) ~= "table" then error("Invalid argument to function setActionList. Expected Table, but got " .. type(table), 2) end
-        actionList = table
+        if not (type(table) == "table" or type(table) == "nil") then error("Invalid argument to function setActionList. Expected Table, but got " .. type(table), 2) end
+        actionList = {} -- If the table parameter is nil, clear the list
+        if type(table) == "table" then actionList = table end -- If the table parameter is a table, set a list
 
         if not shouldntMakeNewTitle then userdata.setTitle(userdata, makeNewTitle()) end
         return interface -- Returns self for chaining
@@ -209,20 +210,25 @@ function pagesCustomMethods:newActionList()
     --[[
         Button(userdata) custom logic
     ]]--
-    userdata:setOnLeftClick(function() if type(actionList[selectedActionIndex].onLeftClick) == "function" then actionList[selectedActionIndex]:onLeftClick() end end)
-    userdata:setOnRightClick(function() if type(actionList[selectedActionIndex].onRightClick) == "function" then actionList[selectedActionIndex]:onRightClick() end end)
+    userdata:setOnLeftClick(function() if actionList[selectedActionIndex] and type(actionList[selectedActionIndex].onLeftClick) == "function" then actionList[selectedActionIndex]:onLeftClick() end end)
+    userdata:setOnRightClick(function() if actionList[selectedActionIndex] and type(actionList[selectedActionIndex].onRightClick) == "function" then actionList[selectedActionIndex]:onRightClick() end end)
     userdata:setOnScroll(function(scrollDirection)
-        if scrollDirection < 0 then -- Scrolling up
-            if selectedActionIndex <= 1 then selectedActionIndex = #actionList + 1 end
-            selectedActionIndex = selectedActionIndex - 1
-        else -- Scrolling down
-            if selectedActionIndex >= #actionList then selectedActionIndex = 0 end
-            selectedActionIndex = selectedActionIndex + 1
-        end
+        if not actionList[selectedActionIndex] then return end -- Prevents errors when the list is REALLY empty
+
+        if scrollDirection > 0 and selectedActionIndex <= 1 then selectedActionIndex = #actionList + 1 end -- Preventing list out of bounds past the beginning of a list
+        if scrollDirection < 0 and selectedActionIndex >= #actionList then selectedActionIndex = 0 end -- Preventing list out of bounds past end of list
+        selectedActionIndex = selectedActionIndex - scrollDirection
 
         if type(actionList[selectedActionIndex].onSelect) == "function" then actionList[selectedActionIndex]:onSelect(scrollDirection) end
 
-        makeNewTitle()
+        if actionList[selectedActionIndex].color or defaultColor then userdata:setColor(actionList[selectedActionIndex].color or defaultColor) end
+        if actionList[selectedActionIndex].hoverColor or defaultHoverColor then userdata:setHoverColor(actionList[selectedActionIndex].hoverColor or defaultHoverColor) end
+        if actionList[selectedActionIndex].item or defaultItem then userdata:setItem(actionList[selectedActionIndex].item or defaultItem) end
+        if actionList[selectedActionIndex].hoverItem or defaultHoverItem then userdata:setHoverItem(actionList[selectedActionIndex].hoverItem or defaultHoverItem) end
+        if actionList[selectedActionIndex].texture or defaultTexture then userdata:setTexture(actionList[selectedActionIndex].texture or defaultTexture) end
+        if actionList[selectedActionIndex].hoverTexture or defaultHoverTexture then userdata:setHoverTexture(actionList[selectedActionIndex].hoverTexture or defaultHoverTexture) end
+
+        userdata.setTitle(userdata, makeNewTitle())
     end)
 
 
