@@ -1,7 +1,7 @@
 # Figura-ActionsLists
 Having trouble with A TON of actions? Stop it, get some help.
 
-This repository contains a script for Figure avatars created by me. This script will create a completely (almost) new action wheel element - *Action List*.<br/>
+This repository contains a script for Figura avatars. This script will create a completely (almost) new action wheel element - *Action List*.<br/>
 <img width="984" height="583" alt="Demo" src="https://github.com/user-attachments/assets/fd6a13ab-d202-4149-a0c8-f1e2a77dd767"/>
 <br/>
 This script makes creating action lists easy and similar to creating a simple action. There are no unfamiliar variables. The action list can be created on any page of the action wheel.<br/>
