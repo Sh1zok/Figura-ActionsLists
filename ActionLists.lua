@@ -1,7 +1,7 @@
 --[[
     ■■■■■ ActionLists
     ■   ■ Author: @sh1zok_was_here
-    ■■■■  v1.0
+    ■■■■  v1.1
 
 MIT License
 
@@ -99,6 +99,7 @@ function pagesCustomMethods:newActionList()
             If there is too much init instructions you can choose to don't update title with true in optional parameter.
     ]]--
     function interface:setTitle(title, shouldntMakeNewTitle)
+        if title == nil then title = "" end
         if not (type(title) == "string" or type(title) == "table") then error("Invalid argument to function setTitle. Expected string or Table, but got " .. type(table), 2) end
         actionListTitle = title
 
@@ -108,9 +109,9 @@ function pagesCustomMethods:newActionList()
     function interface:title(title, shouldntMakeNewTitle) return interface:setTitle(title, shouldntMakeNewTitle) end -- Alias
 
     function interface:setActionList(table, shouldntMakeNewTitle)
-        if not (type(table) == "table" or type(table) == "nil") then error("Invalid argument to function setActionList. Expected Table, but got " .. type(table), 2) end
-        actionList = {} -- If the table parameter is nil, clear the list
-        if type(table) == "table" then actionList = table end -- If the table parameter is a table, set a list
+        if table == nil then table = {} end
+        if type(table) ~= "table" then error("Invalid argument to function setActionList. Expected Table, but got " .. type(table), 2) end
+        actionList = table
 
         if not shouldntMakeNewTitle then userdata.setTitle(userdata, makeNewTitle()) end
         return interface -- Returns self for chaining
@@ -118,6 +119,7 @@ function pagesCustomMethods:newActionList()
     function interface:actionList(table, shouldntMakeNewTitle) return interface:setActionList(table, shouldntMakeNewTitle) end -- Alias
 
     function interface:setActionListColor(color, shouldntMakeNewTitle)
+        if color == nil then color = vec(0, 0, 0) end
         if type(color) ~= "Vector3" then error("Invalid argument to function setActionListColor. Expected Vector3, but got " .. type(color), 2) end
         actionListColor = color
 
@@ -127,6 +129,7 @@ function pagesCustomMethods:newActionList()
     function interface:actionListColor(color, shouldntMakeNewTitle) return interface:setActionListColor(color, shouldntMakeNewTitle) end -- Alias
 
     function interface:setSelectedActionColor(color, shouldntMakeNewTitle)
+        if color == nil then color = vec(0, 0, 0) end
         if type(color) ~= "Vector3" then error("Invalid argument to function setSelectedActionColor. Expected Vector3, but got " .. type(color), 2) end
         selectedActionColor = color
 
@@ -136,6 +139,7 @@ function pagesCustomMethods:newActionList()
     function interface:selectedActionColor(color, shouldntMakeNewTitle) return  interface:setSelectedActionColor(color, shouldntMakeNewTitle) end -- Alias
 
     function interface:setSelectedActionIndex(index, shouldntMakeNewTitle)
+        if index == nil then index = 1 end
         if type(index) ~= "number" then error("Invalid argument to function setSelectedAction. Expected number, but got " .. type(index), 2) end
         selectedActionIndex = index
 
@@ -145,6 +149,7 @@ function pagesCustomMethods:newActionList()
     function interface:selectedActionIndex(index, shouldntMakeNewTitle) return interface:setSelectedAction(index, shouldntMakeNewTitle) end -- Alias
 
     function interface:setVisualSize(size, shouldntMakeNewTitle)
+        if size == nil then size = 7 end
         if type(size) ~= "number" then error("Invalid argument to function setVisualSize. Expected number, but got " .. type(index), 2) end
         visualSize = size
 
@@ -159,6 +164,7 @@ function pagesCustomMethods:newActionList()
         Interface setters: Button(userdata) appearance
     ]]--
     function interface:setColor(color)
+        if color == nil then color = vec(0, 0, 0) end
         if type(color) ~= "Vector3" then error("Invalid argument to function setColor. Expected Vector3, but got " .. type(color), 2) end
         defaultColor = color
 
@@ -168,6 +174,7 @@ function pagesCustomMethods:newActionList()
     function interface:color(color) return interface:setColor(color) end -- Alias
 
     function interface:setHoverColor(color)
+        if color == nil then color = vec(0, 0, 0) end
         if type(color) ~= "Vector3" then error("Invalid argument to function setHoverColor. Expected Vector3, but got " .. type(color), 2) end
         defaultHoverColor = color
 
@@ -177,6 +184,7 @@ function pagesCustomMethods:newActionList()
     function interface:hoverColor(color) return interface:setHoverColor(color) end -- Alias
 
     function interface:setItem(item)
+        if item == nil then item = "minecraft:air" end
         if type(item) ~= "string" then error("Invalid argument to function setItem. Expected string, but got " .. type(item), 2) end
         defaultItem = item
 
@@ -186,6 +194,7 @@ function pagesCustomMethods:newActionList()
     function interface:item(item) return interface:setItem(item) end -- Alias
 
     function interface:setHoverItem(item)
+        if item == nil then item = defaultItem end
         if type(item) ~= "string" then error("Invalid argument to function setHoverItem. Expected string, but got " .. type(item), 2) end
         defaultHoverItem = item
 
