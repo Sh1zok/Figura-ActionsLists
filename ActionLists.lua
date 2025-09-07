@@ -1,7 +1,7 @@
 --[[
     ■■■■■ ActionLists
     ■   ■ Author: @sh1zok_was_here
-    ■■■■  v1.3
+    ■■■■  v1.4
 
 MIT License
 
@@ -26,6 +26,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ]]--
 
+local blankTexture = textures:newTexture("ActionLists.blankTexture", 1, 1)
+
 --#region Modifying pages metatable
 local pagesMetatable = figuraMetatables.Page -- Link to the pages metatable. If something here was changed, it will change in figurаMetatable.Page too
 local pagesOriginalIndexMethod = pagesMetatable.__index -- Save the original __index method for future use
@@ -48,7 +50,8 @@ function pagesCustomMethods:newActionList()
     local selectedActionIndex = 1 -- Index of the selected action
     local visualSize = 7 -- Length of the visible part of the list on the screen
     local actionListTitle = "" -- Title of actionList. Can be a string or a table(for JSON)
-    local defaultColor, defaultHoverColor, defaultTexture, defaultHoverTexture, defaultItem, defaultHoverItem -- Default stuff are only visible when the selected action does not have any of the things listed here
+    local defaultColor, defaultHoverColor, defaultItem, defaultHoverItem -- Default stuff are only visible when the selected action does not have any of the things listed here
+    local defaultTexture, defaultHoverTexture = {}, {}
     local selectedActionColor, actionListColor = vec(1, 1, 1), vec(0.75, 0.75, 0.75)
     local actionList = { -- The action list itself
         [1] = {
@@ -235,23 +238,47 @@ function pagesCustomMethods:newActionList()
     end
     function interface:hoverItem(item) return interface:setHoverItem(item) end -- Alias
 
-    function interface:setTexture(texture)
-        assert(type(texture) == "Texture", "Invalid argument to function setTexture. Expected Texture, but got " .. type(texture))
-        defaultTexture = texture
+    function interface:setTexture(texture, u, v, width, height, scale)
+        assert(type(texture) == "Texture", "Invalid argument 1 to function setTexture. Expected Texture, but got " .. type(texture))
+        assert(type(u) == "number", "Invalid argument 2 to function setTexture. Expected number, but got " .. type(u))
+        assert(type(v) == "number", "Invalid argument 3 to function setTexture. Expected number, but got " .. type(v))
+        assert(type(width) == "number", "Invalid argument 4 to function setTexture. Expected number, but got " .. type(width))
+        assert(type(height) == "number", "Invalid argument 5 to function setTexture. Expected number, but got " .. type(height))
+        assert(type(scale) == "number", "Invalid argument 6 to function setTexture. Expected number, but got " .. type(scale))
+        defaultTexture = {texture, u, v, width, height, scale}
 
-        userdata:setTexture(actionList[selectedActionIndex].texture or defaultTexture)
+        userdata:setTexture(
+            actionList[selectedActionIndex].texture[1] or defaultTexture[1],
+            actionList[selectedActionIndex].texture[2] or defaultTexture[2],
+            actionList[selectedActionIndex].texture[3] or defaultTexture[3],
+            actionList[selectedActionIndex].texture[4] or defaultTexture[4],
+            actionList[selectedActionIndex].texture[5] or defaultTexture[5],
+            actionList[selectedActionIndex].texture[6] or defaultTexture[6]
+        )
         return interface -- Returns self for chaining
     end
-    function interface:texture(texture) return interface:setTexture(texture) end -- Alias
+    function interface:texture(texture, u, v, width, height, scale) return interface:setTexture(texture, u, v, width, height, scale) end -- Alias
 
-    function interface:setHoverTexture(texture)
-        assert(type(texture) == "Texture", "Invalid argument to function setHoverItem. Expected Texture, but got " .. type(texture))
-        defaultHoverTexture = texture
+    function interface:setHoverTexture(texture, u, v, width, height, scale)
+        assert(type(texture) == "Texture", "Invalid argument 1 to function setHoverTexture. Expected Texture, but got " .. type(texture))
+        assert(type(u) == "number", "Invalid argument 2 to function setHoverTexture. Expected number, but got " .. type(u))
+        assert(type(v) == "number", "Invalid argument 3 to function setHoverTexture. Expected number, but got " .. type(v))
+        assert(type(width) == "number", "Invalid argument 4 to function setHoverTexture. Expected number, but got " .. type(width))
+        assert(type(height) == "number", "Invalid argument 5 to function setHoverTexture. Expected number, but got " .. type(height))
+        assert(type(scale) == "number", "Invalid argument 6 to function setHoverTexture. Expected number, but got " .. type(scale))
+        defaultHoverTexture = {texture, u, v, width, height, scale}
 
-        userdata:setHoverTexture(actionList[selectedActionIndex].hoverTexture or defaultHoverTexture)
+        userdata:setHoverTexture(
+            actionList[selectedActionIndex].hoverTexture[1] or defaultHoverTexture[1],
+            actionList[selectedActionIndex].hoverTexture[2] or defaultHoverTexture[2],
+            actionList[selectedActionIndex].hoverTexture[3] or defaultHoverTexture[3],
+            actionList[selectedActionIndex].hoverTexture[4] or defaultHoverTexture[4],
+            actionList[selectedActionIndex].hoverTexture[5] or defaultHoverTexture[5],
+            actionList[selectedActionIndex].hoverTexture[6] or defaultHoverTexture[6]
+        )
         return interface -- Returns self for chaining
     end
-    function interface:hoverTexture(texture) return interface:setHoverTexture(texture) end -- Alias
+    function interface:hoverTexture(texture, u, v, width, height, scale) return interface:setHoverTexture(texture, u, v, width, height, scale) end -- Alias
 
 
 
@@ -288,8 +315,51 @@ function pagesCustomMethods:newActionList()
         if actionList[selectedActionIndex].hoverColor or defaultHoverColor then userdata:setHoverColor(actionList[selectedActionIndex].hoverColor or defaultHoverColor) end
         if actionList[selectedActionIndex].item or defaultItem then userdata:setItem(actionList[selectedActionIndex].item or defaultItem) end
         if actionList[selectedActionIndex].hoverItem or defaultHoverItem then userdata:setHoverItem(actionList[selectedActionIndex].hoverItem or defaultHoverItem) end
-        if actionList[selectedActionIndex].texture or defaultTexture then userdata:setTexture(actionList[selectedActionIndex].texture or defaultTexture) end
-        if actionList[selectedActionIndex].hoverTexture or defaultHoverTexture then userdata:setHoverTexture(actionList[selectedActionIndex].hoverTexture or defaultHoverTexture) end
+        if actionList[selectedActionIndex].texture or defaultTexture[1] then
+            if actionList[selectedActionIndex].texture then -- Prevents indexing a sometimes nil value(actionList[selectedActionIndex].texture) with some keys
+                userdata:setTexture(
+                    actionList[selectedActionIndex].texture[1] or defaultTexture[1],
+                    actionList[selectedActionIndex].texture[2] or defaultTexture[2],
+                    actionList[selectedActionIndex].texture[3] or defaultTexture[3],
+                    actionList[selectedActionIndex].texture[4] or defaultTexture[4],
+                    actionList[selectedActionIndex].texture[5] or defaultTexture[5],
+                    actionList[selectedActionIndex].texture[6] or defaultTexture[6]
+                )
+            else
+                userdata:setTexture(defaultTexture[1], defaultTexture[2], defaultTexture[3], defaultTexture[4], defaultTexture[5], defaultTexture[6])
+            end
+        else
+            userdata:setTexture(blankTexture)
+        end
+        if actionList[selectedActionIndex].hoverTexture or defaultHoverTexture[1] then
+            if actionList[selectedActionIndex].hoverTexture then
+                userdata:setHoverTexture(
+                    actionList[selectedActionIndex].hoverTexture[1] or defaultHoverTexture[1],
+                    actionList[selectedActionIndex].hoverTexture[2] or defaultHoverTexture[2],
+                    actionList[selectedActionIndex].hoverTexture[3] or defaultHoverTexture[3],
+                    actionList[selectedActionIndex].hoverTexture[4] or defaultHoverTexture[4],
+                    actionList[selectedActionIndex].hoverTexture[5] or defaultHoverTexture[5],
+                    actionList[selectedActionIndex].hoverTexture[6] or defaultHoverTexture[6]
+                )
+            else
+                userdata:setHoverTexture(defaultHoverTexture[1], defaultHoverTexture[2], defaultHoverTexture[3], defaultHoverTexture[4], defaultHoverTexture[5], defaultHoverTexture[6])
+            end
+        elseif actionList[selectedActionIndex].texture or defaultTexture[1] then
+            if actionList[selectedActionIndex].texture then -- Prevents indexing a sometimes nil value(actionList[selectedActionIndex].texture) with some keys
+                userdata:setHoverTexture(
+                    actionList[selectedActionIndex].texture[1] or defaultTexture[1],
+                    actionList[selectedActionIndex].texture[2] or defaultTexture[2],
+                    actionList[selectedActionIndex].texture[3] or defaultTexture[3],
+                    actionList[selectedActionIndex].texture[4] or defaultTexture[4],
+                    actionList[selectedActionIndex].texture[5] or defaultTexture[5],
+                    actionList[selectedActionIndex].texture[6] or defaultTexture[6]
+                )
+            else
+                userdata:setHoverTexture(defaultTexture[1], defaultTexture[2], defaultTexture[3], defaultTexture[4], defaultTexture[5], defaultTexture[6])
+            end
+        else
+            userdata:setHoverTexture(blankTexture)
+        end
 
         userdata.setTitle(userdata, makeNewTitle())
     end)
