@@ -1,7 +1,7 @@
 --[[
     ■■■■■ ActionLists
     ■   ■ Author: @sh1zok_was_here
-    ■■■■  v1.2
+    ■■■■  v1.3
 
 MIT License
 
@@ -118,25 +118,41 @@ function pagesCustomMethods:newActionList()
     end
     function interface:actionList(table, shouldntMakeNewTitle) return interface:setActionList(table, shouldntMakeNewTitle) end -- Alias
 
-    function interface:setActionListColor(color, shouldntMakeNewTitle)
-        if color == nil then color = vec(0, 0, 0) end
-        assert(type(color) == "Vector3", "Invalid argument to function setActionListColor. Expected Vector3, but got " .. type(color))
-        actionListColor = color
+    function interface:setActionListColor(colorOrR, g, b, shouldntMakeNewTitle)
+        if g ~= nil or b ~= nil then
+            assert(type(colorOrR) == "number", "Invalid argument 1 to function setActionListColor. Expected number, but got " .. type(colorOrR))
+            assert(type(g) == "number", "Invalid argument 2 to function setActionListColor. Expected number, but got " .. type(g))
+            assert(type(b) == "number", "Invalid argument 3 to function setActionListColor. Expected number, but got " .. type(b))
+
+            colorOrR = vec(colorOrR, g, b)
+        end
+
+        if colorOrR == nil then colorOrR = vec(0, 0, 0) end
+        assert(type(colorOrR) == "Vector3", "Invalid argument to function setActionListColor. Expected Vector3, but got " .. type(colorOrR))
+        actionListColor = colorOrR
 
         if not shouldntMakeNewTitle then userdata.setTitle(userdata, makeNewTitle()) end
         return interface -- Returns self for chaining
     end
-    function interface:actionListColor(color, shouldntMakeNewTitle) return interface:setActionListColor(color, shouldntMakeNewTitle) end -- Alias
+    function interface:actionListColor(colorOrR, g, b, shouldntMakeNewTitle) return interface:setActionListColor(colorOrR, g, b, shouldntMakeNewTitle) end -- Alias
 
-    function interface:setSelectedActionColor(color, shouldntMakeNewTitle)
-        if color == nil then color = vec(0, 0, 0) end
-        assert(type(color) == "Vector3", "Invalid argument to function setSelectedActionColor. Expected Vector3, but got " .. type(color))
-        selectedActionColor = color
+    function interface:setSelectedActionColor(colorOrR, g, b, shouldntMakeNewTitle)
+        if g ~= nil or b ~= nil then
+            assert(type(colorOrR) == "number", "Invalid argument 1 to function setSelectedActionColor. Expected number, but got " .. type(colorOrR))
+            assert(type(g) == "number", "Invalid argument 2 to function setSelectedActionColor. Expected number, but got " .. type(g))
+            assert(type(b) == "number", "Invalid argument 3 to function setSelectedActionColor. Expected number, but got " .. type(b))
+
+            colorOrR = vec(colorOrR, g, b)
+        end
+
+        if colorOrR == nil then colorOrR = vec(0, 0, 0) end
+        assert(type(colorOrR) == "Vector3", "Invalid argument to function setSelectedActionColor. Expected Vector3, but got " .. type(colorOrR))
+        selectedActionColor = colorOrR
 
         if not shouldntMakeNewTitle then userdata.setTitle(userdata, makeNewTitle()) end
         return interface -- Returns self for chaining
     end
-    function interface:selectedActionColor(color, shouldntMakeNewTitle) return  interface:setSelectedActionColor(color, shouldntMakeNewTitle) end -- Alias
+    function interface:selectedActionColor(colorOrR, g ,b, shouldntMakeNewTitle) return  interface:setSelectedActionColor(colorOrR, g, b, shouldntMakeNewTitle) end -- Alias
 
     function interface:setSelectedActionIndex(index, shouldntMakeNewTitle)
         if index == nil then index = 1 end
@@ -163,25 +179,41 @@ function pagesCustomMethods:newActionList()
     --[[
         Interface setters: Button(userdata) appearance
     ]]--
-    function interface:setColor(color)
-        if color == nil then color = vec(0, 0, 0) end
-        assert(type(color) == "Vector3", "Invalid argument to function setColor. Expected Vector3, but got " .. type(color))
-        defaultColor = color
+    function interface:setColor(colorOrR, g, b)
+        if g ~= nil or b ~= nil then
+            assert(type(colorOrR) == "number", "Invalid argument 1 to function setColor. Expected number, but got " .. type(colorOrR))
+            assert(type(g) == "number", "Invalid argument 2 to function setColor. Expected number, but got " .. type(g))
+            assert(type(b) == "number", "Invalid argument 3 to function setColor. Expected number, but got " .. type(b))
+
+            colorOrR = vec(colorOrR, g, b)
+        end
+
+        if colorOrR == nil then colorOrR = vec(0, 0, 0) end
+        assert(type(colorOrR) == "Vector3", "Invalid argument to function setColor. Expected Vector3, but got " .. type(colorOrR))
+        defaultColor = colorOrR
 
         userdata:setColor(actionList[selectedActionIndex].color or defaultColor)
         return interface -- Returns self for chaining
     end
-    function interface:color(color) return interface:setColor(color) end -- Alias
+    function interface:color(colorOrR, g, b) return interface:setColor(colorOrR, g, b) end -- Alias
 
-    function interface:setHoverColor(color)
-        if color == nil then color = vec(0, 0, 0) end
-        assert(type(color) == "Vector3", "Invalid argument to function setHoverColor. Expected Vector3, but got " .. type(color))
-        defaultHoverColor = color
+    function interface:setHoverColor(colorOrR, g, b)
+        if g ~= nil or b ~= nil then
+            assert(type(colorOrR) == "number", "Invalid argument 1 to function setHoverColor. Expected number, but got " .. type(colorOrR))
+            assert(type(g) == "number", "Invalid argument 2 to function setHoverColor. Expected number, but got " .. type(g))
+            assert(type(b) == "number", "Invalid argument 3 to function setHoverColor. Expected number, but got " .. type(b))
+
+            colorOrR = vec(colorOrR, g, b)
+        end
+
+        if colorOrR == nil then colorOrR = vec(0, 0, 0) end
+        assert(type(colorOrR) == "Vector3", "Invalid argument to function setHoverColor. Expected Vector3, but got " .. type(colorOrR))
+        defaultHoverColor = colorOrR
 
         userdata:setHoverColor(actionList[selectedActionIndex].hoverColor or defaultHoverColor)
         return interface -- Returns self for chaining
     end
-    function interface:hoverColor(color) return interface:setHoverColor(color) end -- Alias
+    function interface:hoverColor(colorOrR, g, b) return interface:setHoverColor(colorOrR, g, b) end -- Alias
 
     function interface:setItem(item)
         if item == nil then item = "minecraft:air" end
