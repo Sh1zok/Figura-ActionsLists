@@ -1,7 +1,7 @@
 --[[
     ■■■■■ ActionLists
     ■   ■ Author: @sh1zok_was_here
-    ■■■■  v1.1
+    ■■■■  v1.2
 
 MIT License
 
@@ -100,7 +100,7 @@ function pagesCustomMethods:newActionList()
     ]]--
     function interface:setTitle(title, shouldntMakeNewTitle)
         if title == nil then title = "" end
-        if not (type(title) == "string" or type(title) == "table") then error("Invalid argument to function setTitle. Expected string or Table, but got " .. type(table), 2) end
+        assert(type(title) == "string" or type(title) == "table", "Invalid argument to function setTitle. Expected string or Table, but got " .. type(table))
         actionListTitle = title
 
         if not shouldntMakeNewTitle then userdata.setTitle(userdata, makeNewTitle()) end
@@ -110,7 +110,7 @@ function pagesCustomMethods:newActionList()
 
     function interface:setActionList(table, shouldntMakeNewTitle)
         if table == nil then table = {} end
-        if type(table) ~= "table" then error("Invalid argument to function setActionList. Expected Table, but got " .. type(table), 2) end
+        assert(type(table) == "table", "Invalid argument to function setActionList. Expected Table, but got " .. type(table))
         actionList = table
 
         if not shouldntMakeNewTitle then userdata.setTitle(userdata, makeNewTitle()) end
@@ -120,7 +120,7 @@ function pagesCustomMethods:newActionList()
 
     function interface:setActionListColor(color, shouldntMakeNewTitle)
         if color == nil then color = vec(0, 0, 0) end
-        if type(color) ~= "Vector3" then error("Invalid argument to function setActionListColor. Expected Vector3, but got " .. type(color), 2) end
+        assert(type(color) == "Vector3", "Invalid argument to function setActionListColor. Expected Vector3, but got " .. type(color))
         actionListColor = color
 
         if not shouldntMakeNewTitle then userdata.setTitle(userdata, makeNewTitle()) end
@@ -130,7 +130,7 @@ function pagesCustomMethods:newActionList()
 
     function interface:setSelectedActionColor(color, shouldntMakeNewTitle)
         if color == nil then color = vec(0, 0, 0) end
-        if type(color) ~= "Vector3" then error("Invalid argument to function setSelectedActionColor. Expected Vector3, but got " .. type(color), 2) end
+        assert(type(color) == "Vector3", "Invalid argument to function setSelectedActionColor. Expected Vector3, but got " .. type(color))
         selectedActionColor = color
 
         if not shouldntMakeNewTitle then userdata.setTitle(userdata, makeNewTitle()) end
@@ -140,7 +140,7 @@ function pagesCustomMethods:newActionList()
 
     function interface:setSelectedActionIndex(index, shouldntMakeNewTitle)
         if index == nil then index = 1 end
-        if type(index) ~= "number" then error("Invalid argument to function setSelectedAction. Expected number, but got " .. type(index), 2) end
+        assert(type(index) == "number", "Invalid argument to function setSelectedAction. Expected number, but got " .. type(index))
         selectedActionIndex = index
 
         if not shouldntMakeNewTitle then userdata.setTitle(userdata, makeNewTitle()) end
@@ -150,7 +150,7 @@ function pagesCustomMethods:newActionList()
 
     function interface:setVisualSize(size, shouldntMakeNewTitle)
         if size == nil then size = 7 end
-        if type(size) ~= "number" then error("Invalid argument to function setVisualSize. Expected number, but got " .. type(index), 2) end
+        assert(type(size) == "number", "Invalid argument to function setVisualSize. Expected number, but got " .. type(index))
         visualSize = size
 
         if not shouldntMakeNewTitle then userdata.setTitle(userdata, makeNewTitle()) end
@@ -165,7 +165,7 @@ function pagesCustomMethods:newActionList()
     ]]--
     function interface:setColor(color)
         if color == nil then color = vec(0, 0, 0) end
-        if type(color) ~= "Vector3" then error("Invalid argument to function setColor. Expected Vector3, but got " .. type(color), 2) end
+        assert(type(color) == "Vector3", "Invalid argument to function setColor. Expected Vector3, but got " .. type(color))
         defaultColor = color
 
         userdata:setColor(actionList[selectedActionIndex].color or defaultColor)
@@ -175,7 +175,7 @@ function pagesCustomMethods:newActionList()
 
     function interface:setHoverColor(color)
         if color == nil then color = vec(0, 0, 0) end
-        if type(color) ~= "Vector3" then error("Invalid argument to function setHoverColor. Expected Vector3, but got " .. type(color), 2) end
+        assert(type(color) == "Vector3", "Invalid argument to function setHoverColor. Expected Vector3, but got " .. type(color))
         defaultHoverColor = color
 
         userdata:setHoverColor(actionList[selectedActionIndex].hoverColor or defaultHoverColor)
@@ -185,7 +185,7 @@ function pagesCustomMethods:newActionList()
 
     function interface:setItem(item)
         if item == nil then item = "minecraft:air" end
-        if type(item) ~= "string" then error("Invalid argument to function setItem. Expected string, but got " .. type(item), 2) end
+        assert(type(item) == "string", "Invalid argument to function setItem. Expected string, but got " .. type(item))
         defaultItem = item
 
         userdata:setItem(actionList[selectedActionIndex].item or defaultItem)
@@ -195,7 +195,7 @@ function pagesCustomMethods:newActionList()
 
     function interface:setHoverItem(item)
         if item == nil then item = defaultItem end
-        if type(item) ~= "string" then error("Invalid argument to function setHoverItem. Expected string, but got " .. type(item), 2) end
+        assert(type(item) ~= "string", "Invalid argument to function setHoverItem. Expected string, but got " .. type(item))
         defaultHoverItem = item
 
         userdata:setHoverItem(actionList[selectedActionIndex].hoverItem or defaultHoverItem)
@@ -204,7 +204,7 @@ function pagesCustomMethods:newActionList()
     function interface:hoverItem(item) return interface:setHoverItem(item) end -- Alias
 
     function interface:setTexture(texture)
-        if type(texture) ~= "Texture" then error("Invalid argument to function setTexture. Expected Texture, but got " .. type(texture), 2) end
+        assert(type(texture) == "Texture", "Invalid argument to function setTexture. Expected Texture, but got " .. type(texture))
         defaultTexture = texture
 
         userdata:setTexture(actionList[selectedActionIndex].texture or defaultTexture)
@@ -213,7 +213,7 @@ function pagesCustomMethods:newActionList()
     function interface:texture(texture) return interface:setTexture(texture) end -- Alias
 
     function interface:setHoverTexture(texture)
-        if type(texture) ~= "Texture" then error("Invalid argument to function setHoverItem. Expected Texture, but got " .. type(texture), 2) end
+        assert(type(texture) == "Texture", "Invalid argument to function setHoverItem. Expected Texture, but got " .. type(texture))
         defaultHoverTexture = texture
 
         userdata:setHoverTexture(actionList[selectedActionIndex].hoverTexture or defaultHoverTexture)
