@@ -1,7 +1,7 @@
 --[[
     ■■■■■ ActionLists
     ■   ■ Author: @sh1zok_was_here
-    ■■■■  v1.4.1
+    ■■■■  v1.4.3
 
 MIT License
 
@@ -83,9 +83,19 @@ function pagesCustomMethods:newActionList()
         for index, value in ipairs(actionList) do
             if index >= topVisualIndex and index <= bottomVisualIndex then
                 if index == selectedActionIndex then
-                    table.insert(title, {text = "\n " .. "=> " .. value.title, color = "#" .. vectors.rgbToHex(selectedActionColor)})
+                    table.insert(title, {text = "\n " .. "=> ", color = "#" .. vectors.rgbToHex(selectedActionColor)})
+                    if type(value.title) == "table" then
+                        table.insert(title, value.title)
+                    else
+                        table.insert(title, {text = value.title, color = "#" .. vectors.rgbToHex(selectedActionColor)})
+                    end
                 else
-                    table.insert(title, {text = "\n " .. index .. ". " .. value.title, color = "#" .. vectors.rgbToHex(actionListColor)})
+                    table.insert(title, {text = "\n " .. index .. ". ", color = "#" .. vectors.rgbToHex(actionListColor)})
+                    if type(value.title) == "table" then
+                        table.insert(title, value.title)
+                    else
+                        table.insert(title, {text = value.title, color = "#" .. vectors.rgbToHex(actionListColor)})
+                    end
                 end
             end
         end
@@ -254,14 +264,19 @@ function pagesCustomMethods:newActionList()
         if scale then assert(type(scale) == "number", "Invalid argument 6 to function setTexture. Expected number, but got " .. type(scale)) end
         defaultTexture = {texture, u, v, width, height, scale}
 
-        userdata:setTexture(
-            actionList[selectedActionIndex].texture[1] or defaultTexture[1],
-            actionList[selectedActionIndex].texture[2] or defaultTexture[2],
-            actionList[selectedActionIndex].texture[3] or defaultTexture[3],
-            actionList[selectedActionIndex].texture[4] or defaultTexture[4],
-            actionList[selectedActionIndex].texture[5] or defaultTexture[5],
-            actionList[selectedActionIndex].texture[6] or defaultTexture[6]
-        )
+        if actionList[selectedActionIndex].texture then -- Prevents indexing a sometimes nil value(actionList[selectedActionIndex].texture) with some keys
+            userdata:setTexture(
+                actionList[selectedActionIndex].texture[1] or defaultTexture[1],
+                actionList[selectedActionIndex].texture[2] or defaultTexture[2],
+                actionList[selectedActionIndex].texture[3] or defaultTexture[3],
+                actionList[selectedActionIndex].texture[4] or defaultTexture[4],
+                actionList[selectedActionIndex].texture[5] or defaultTexture[5],
+                actionList[selectedActionIndex].texture[6] or defaultTexture[6]
+            )
+        else
+            userdata:setTexture(defaultTexture[1], defaultTexture[2], defaultTexture[3], defaultTexture[4], defaultTexture[5], defaultTexture[6])
+        end
+
         return interface -- Returns self for chaining
     end
     function interface:texture(texture, u, v, width, height, scale) return interface:setTexture(texture, u, v, width, height, scale) end -- Alias
@@ -282,14 +297,19 @@ function pagesCustomMethods:newActionList()
         if scale then assert(type(scale) == "number", "Invalid argument 6 to function setHoverTexture. Expected number, but got " .. type(scale)) end
         defaultHoverTexture = {texture, u, v, width, height, scale}
 
-        userdata:setHoverTexture(
-            actionList[selectedActionIndex].hoverTexture[1] or defaultHoverTexture[1],
-            actionList[selectedActionIndex].hoverTexture[2] or defaultHoverTexture[2],
-            actionList[selectedActionIndex].hoverTexture[3] or defaultHoverTexture[3],
-            actionList[selectedActionIndex].hoverTexture[4] or defaultHoverTexture[4],
-            actionList[selectedActionIndex].hoverTexture[5] or defaultHoverTexture[5],
-            actionList[selectedActionIndex].hoverTexture[6] or defaultHoverTexture[6]
-        )
+        if actionList[selectedActionIndex].hoverTexture then
+            userdata:setHoverTexture(
+                actionList[selectedActionIndex].hoverTexture[1] or defaultHoverTexture[1],
+                actionList[selectedActionIndex].hoverTexture[2] or defaultHoverTexture[2],
+                actionList[selectedActionIndex].hoverTexture[3] or defaultHoverTexture[3],
+                actionList[selectedActionIndex].hoverTexture[4] or defaultHoverTexture[4],
+                actionList[selectedActionIndex].hoverTexture[5] or defaultHoverTexture[5],
+                actionList[selectedActionIndex].hoverTexture[6] or defaultHoverTexture[6]
+            )
+        else
+            userdata:setHoverTexture(defaultHoverTexture[1], defaultHoverTexture[2], defaultHoverTexture[3], defaultHoverTexture[4], defaultHoverTexture[5], defaultHoverTexture[6])
+        end
+
         return interface -- Returns self for chaining
     end
     function interface:hoverTexture(texture, u, v, width, height, scale) return interface:setHoverTexture(texture, u, v, width, height, scale) end -- Alias
