@@ -1,7 +1,7 @@
 --[[
     ■■■■■ ActionLists
     ■   ■ Author: @sh1zok_was_here
-    ■■■■  v1.4
+    ■■■■  v1.4.1
 
 MIT License
 
@@ -240,11 +240,18 @@ function pagesCustomMethods:newActionList()
 
     function interface:setTexture(texture, u, v, width, height, scale)
         assert(type(texture) == "Texture", "Invalid argument 1 to function setTexture. Expected Texture, but got " .. type(texture))
-        assert(type(u) == "number", "Invalid argument 2 to function setTexture. Expected number, but got " .. type(u))
-        assert(type(v) == "number", "Invalid argument 3 to function setTexture. Expected number, but got " .. type(v))
-        assert(type(width) == "number", "Invalid argument 4 to function setTexture. Expected number, but got " .. type(width))
-        assert(type(height) == "number", "Invalid argument 5 to function setTexture. Expected number, but got " .. type(height))
-        assert(type(scale) == "number", "Invalid argument 6 to function setTexture. Expected number, but got " .. type(scale))
+
+        if u or v then
+            assert(type(u) == "number", "Invalid argument 2 to function setTexture. Expected number, but got " .. type(u))
+            assert(type(v) == "number", "Invalid argument 3 to function setTexture. Expected number, but got " .. type(v))
+        end
+
+        if width or height then
+            assert(type(width) == "number", "Invalid argument 4 to function setTexture. Expected number, but got " .. type(width))
+            assert(type(height) == "number", "Invalid argument 5 to function setTexture. Expected number, but got " .. type(height))
+        end
+
+        if scale then assert(type(scale) == "number", "Invalid argument 6 to function setTexture. Expected number, but got " .. type(scale)) end
         defaultTexture = {texture, u, v, width, height, scale}
 
         userdata:setTexture(
@@ -261,11 +268,18 @@ function pagesCustomMethods:newActionList()
 
     function interface:setHoverTexture(texture, u, v, width, height, scale)
         assert(type(texture) == "Texture", "Invalid argument 1 to function setHoverTexture. Expected Texture, but got " .. type(texture))
-        assert(type(u) == "number", "Invalid argument 2 to function setHoverTexture. Expected number, but got " .. type(u))
-        assert(type(v) == "number", "Invalid argument 3 to function setHoverTexture. Expected number, but got " .. type(v))
-        assert(type(width) == "number", "Invalid argument 4 to function setHoverTexture. Expected number, but got " .. type(width))
-        assert(type(height) == "number", "Invalid argument 5 to function setHoverTexture. Expected number, but got " .. type(height))
-        assert(type(scale) == "number", "Invalid argument 6 to function setHoverTexture. Expected number, but got " .. type(scale))
+
+        if u or v then
+            assert(type(u) == "number", "Invalid argument 2 to function setHoverTexture. Expected number, but got " .. type(u))
+            assert(type(v) == "number", "Invalid argument 3 to function setHoverTexture. Expected number, but got " .. type(v))
+        end
+
+        if width or height then
+            assert(type(width) == "number", "Invalid argument 4 to function setHoverTexture. Expected number, but got " .. type(width))
+            assert(type(height) == "number", "Invalid argument 5 to function setHoverTexture. Expected number, but got " .. type(height))
+        end
+
+        if scale then assert(type(scale) == "number", "Invalid argument 6 to function setHoverTexture. Expected number, but got " .. type(scale)) end
         defaultHoverTexture = {texture, u, v, width, height, scale}
 
         userdata:setHoverTexture(
